@@ -491,3 +491,46 @@ end
 rejoinGame()
         end,
 })
+
+local Button = MiscTab:CreateButton({
+   Name = "Noclip HotKey H",
+   Callback = function()
+   local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local noclipEnabled = false
+
+-- Function to enable or disable noclip
+local function toggleNoclip()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        print("Noclip enabled")
+    else
+        print("Noclip disabled")
+    end
+end
+
+-- Function to handle noclip logic
+local function noclipLoop()
+    if noclipEnabled then
+        for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") and part.CanCollide then
+                part.CanCollide = false
+            end
+        end
+    end
+end
+
+-- Listen for key press to toggle noclip
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        toggleNoclip()
+    end
+end)
+
+-- Run the noclip loop
+RunService.Stepped:Connect(noclipLoop)
+   end,
+})
