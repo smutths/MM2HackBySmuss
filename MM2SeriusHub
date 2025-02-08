@@ -1,0 +1,493 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "🗡️MM2 Hack🔫",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Loading MM2 Hack",
+   LoadingSubtitle = "by Smuss",
+   Theme = "AmberGlow", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Big Hub"
+   },
+
+   Discord = {
+      Enabled = true, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "7YquTw3d", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "MM2 script Key",
+      Subtitle = "MM2 Key System",
+      Note = "Join Discord For Key https://discord.gg/7YquTw3d", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"https://pastebin.com/raw/e7JNkn93"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local MainTab = Window:CreateTab("Home🏠", nil) -- Title, Image
+local Section = MainTab:CreateSection("Esp")
+
+local Button = MainTab:CreateButton({
+   Name = "Show Murder/Sheriff",
+   Callback = function()
+   local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- GUI Elements
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local UIPadding = Instance.new("UIPadding")
+local Title = Instance.new("TextLabel")
+local MurdererImage = Instance.new("ImageLabel")
+local SheriffImage = Instance.new("ImageLabel")
+local ToggleButton = Instance.new("TextButton")
+
+ScreenGui.Parent = game.CoreGui
+
+-- Main Frame
+MainFrame.Size = UDim2.new(0, 300, 0, 180)
+MainFrame.Position = UDim2.new(1, -310, 1, -190) -- Positioned at the bottom right corner
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Parent = ScreenGui
+
+-- Frame Aesthetics
+UICorner.CornerRadius = UDim.new(0, 15)
+UICorner.Parent = MainFrame
+
+UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(0, 85, 255)
+UIStroke.Parent = MainFrame
+
+UIPadding.PaddingTop = UDim.new(0, 10)
+UIPadding.PaddingBottom = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.Parent = MainFrame
+
+-- Title
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.Text = "MM2 Role Display"
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 24
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1
+Title.Parent = MainFrame
+
+-- Murderer Image
+MurdererImage.Size = UDim2.new(0, 100, 0, 100)
+MurdererImage.Position = UDim2.new(0, 10, 0, 40)
+MurdererImage.BackgroundTransparency = 1
+MurdererImage.Parent = MainFrame
+
+-- Sheriff Image
+SheriffImage.Size = UDim2.new(0, 100, 0, 100)
+SheriffImage.Position = UDim2.new(0, 190, 0, 40)
+SheriffImage.BackgroundTransparency = 1
+SheriffImage.Parent = MainFrame
+
+-- Toggle Button
+ToggleButton.Size = UDim2.new(0, 100, 0, 30)
+ToggleButton.Position = UDim2.new(1, -110, 1, -40) -- Positioned at the bottom right corner
+ToggleButton.Text = "Toggle"
+ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.TextSize = 20
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+ToggleButton.Parent = ScreenGui
+
+-- Button Aesthetics
+local ButtonUICorner = Instance.new("UICorner")
+ButtonUICorner.CornerRadius = UDim.new(0, 10)
+ButtonUICorner.Parent = ToggleButton
+
+local ButtonUIStroke = Instance.new("UIStroke")
+ButtonUIStroke.Thickness = 2
+ButtonUIStroke.Color = Color3.fromRGB(255, 255, 255)
+ButtonUIStroke.Parent = ToggleButton
+
+-- Function to update images
+local function updateImages()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Backpack:FindFirstChild("Knife") or (player.Character and player.Character:FindFirstChild("Knife")) then
+            MurdererImage.Image = Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+        end
+        if player.Backpack:FindFirstChild("Gun") or (player.Character and player.Character:FindFirstChild("Gun")) then
+            SheriffImage.Image = Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+        end
+    end
+end
+
+RunService.RenderStepped:Connect(updateImages)
+
+-- Function to toggle frame visibility
+local function toggleFrame()
+    MainFrame.Visible = not MainFrame.Visible
+end
+
+ToggleButton.MouseButton1Click:Connect(toggleFrame)
+        end,
+})
+
+local Button = MainTab:CreateButton({
+   Name = "ESP",
+   Callback = function()
+   local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LP = Players.LocalPlayer
+local roles
+
+-- > Functions <--
+
+function CreateHighlight() -- make any new highlights for new players
+	for i, v in pairs(Players:GetChildren()) do
+		if v ~= LP and v.Character and not v.Character:FindFirstChild("Highlight") then
+			Instance.new("Highlight", v.Character)           
+		end
+	end
+end
+
+function UpdateHighlights() -- Get Current Role Colors (messy)
+	for _, v in pairs(Players:GetChildren()) do
+		if v ~= LP and v.Character and v.Character:FindFirstChild("Highlight") then
+			Highlight = v.Character:FindFirstChild("Highlight")
+			if v.Name == Sheriff and IsAlive(v) then
+				Highlight.FillColor = Color3.fromRGB(0, 0, 225)
+			elseif v.Name == Murder and IsAlive(v) then
+				Highlight.FillColor = Color3.fromRGB(225, 0, 0)
+			elseif v.Name == Hero and IsAlive(v) and not IsAlive(game.Players[Sheriff]) then
+				Highlight.FillColor = Color3.fromRGB(255, 250, 0)
+			else
+				Highlight.FillColor = Color3.fromRGB(0, 225, 0)
+			end
+		end
+	end
+end	
+
+function IsAlive(Player) -- Simple sexy function
+	for i, v in pairs(roles) do
+		if Player.Name == i then
+			if not v.Killed and not v.Dead then
+				return true
+			else
+				return false
+			end
+		end
+	end
+end
+
+
+-- > Loops < --
+
+RunService.RenderStepped:connect(function()
+	roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer()
+	for i, v in pairs(roles) do
+		if v.Role == "Murderer" then
+			Murder = i
+		elseif v.Role == 'Sheriff'then
+			Sheriff = i
+		elseif v.Role == 'Hero'then
+			Hero = i
+		end
+	end
+	CreateHighlight()
+	UpdateHighlights()
+end)
+   end,
+})
+
+local Section = MainTab:CreateSection("Sheriff")
+
+local Button = MainTab:CreateButton({
+   Name = "TeleportMurderBehind",
+   Callback = function()
+   local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- GUI Elements
+local ScreenGui = Instance.new("ScreenGui")
+local TeleportButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local UIPadding = Instance.new("UIPadding")
+local UIGradient = Instance.new("UIGradient")
+
+ScreenGui.Parent = game.CoreGui
+
+-- Teleport Button
+TeleportButton.Size = UDim2.new(0, 200, 0, 50)
+TeleportButton.Position = UDim2.new(1, -210, 0, 40) -- Positioned below the Roblox logo
+TeleportButton.Text = "Teleport and Shoot"
+TeleportButton.Font = Enum.Font.SourceSansBold
+TeleportButton.TextSize = 20
+TeleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleportButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+TeleportButton.Parent = ScreenGui
+
+-- Button Aesthetics
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = TeleportButton
+
+UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(0, 85, 255)
+UIStroke.Parent = TeleportButton
+
+UIPadding.PaddingTop = UDim.new(0, 5)
+UIPadding.PaddingBottom = UDim.new(0, 5)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.Parent = TeleportButton
+
+UIGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 170, 255)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 85, 255))
+}
+UIGradient.Parent = TeleportButton
+
+-- Function to teleport behind the murderer and shoot
+local function teleportAndShoot()
+    if LocalPlayer.Backpack:FindFirstChild("Gun") or (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Gun")) then
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and (player.Backpack:FindFirstChild("Knife") or (player.Character and player.Character:FindFirstChild("Knife"))) then
+                local murderer = player
+                if murderer.Character and murderer.Character:FindFirstChild("HumanoidRootPart") then
+                    -- Teleport behind the murderer
+                    local murdererPosition = murderer.Character.HumanoidRootPart.Position
+                    local teleportPosition = murdererPosition - murderer.Character.HumanoidRootPart.CFrame.LookVector * 5
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition, murdererPosition)
+
+                    -- Shoot the murderer
+                    if LocalPlayer.Character:FindFirstChild("Gun") then
+                        local gun = LocalPlayer.Character.Gun
+                        gun:Activate()
+                    elseif LocalPlayer.Backpack:FindFirstChild("Gun") then
+                        local gun = LocalPlayer.Backpack.Gun
+                        gun.Parent = LocalPlayer.Character
+                        gun:Activate()
+                    end
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+-- Teleport Button Click Event
+TeleportButton.MouseButton1Click:Connect(function()
+    teleportAndShoot()
+end)
+        end,
+})
+
+local Section = MainTab:CreateSection("Murder")
+
+local Button = MainTab:CreateButton({
+   Name = "Kill Everyone",
+   Callback = function()
+   local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- GUI Elements
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local Title = Instance.new("TextLabel")
+local AttackButton = Instance.new("TextButton")
+local UIPadding = Instance.new("UIPadding")
+local UIGradient = Instance.new("UIGradient")
+
+ScreenGui.Parent = game.CoreGui
+
+-- Main Frame
+MainFrame.Size = UDim2.new(0, 200, 0, 100)
+MainFrame.Position = UDim2.new(1, -210, 0, 150) -- Positioned below the upper right corner, a bit lower
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Parent = ScreenGui
+
+-- Frame Aesthetics
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+UIStroke.Thickness = 2
+UIStroke.Color = Color3.fromRGB(255, 255, 255)
+UIStroke.Parent = MainFrame
+
+UIPadding.PaddingTop = UDim.new(0, 10)
+UIPadding.PaddingBottom = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.Parent = MainFrame
+
+-- Title
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.Text = "Auto Attack"
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 24
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1
+Title.Parent = MainFrame
+
+-- Attack Button
+AttackButton.Size = UDim2.new(1, -20, 0, 40)
+AttackButton.Position = UDim2.new(0.5, -90, 0.5, -10) -- Centered within the frame
+AttackButton.Text = "Start Attack"
+AttackButton.Font = Enum.Font.SourceSansBold
+AttackButton.TextSize = 20
+AttackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AttackButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+AttackButton.Parent = MainFrame
+
+-- Button Aesthetics
+local ButtonUICorner = Instance.new("UICorner")
+ButtonUICorner.CornerRadius = UDim.new(0, 10)
+ButtonUICorner.Parent = AttackButton
+
+local ButtonUIStroke = Instance.new("UIStroke")
+ButtonUIStroke.Thickness = 2
+ButtonUIStroke.Color = Color3.fromRGB(255, 255, 255)
+ButtonUIStroke.Parent = AttackButton
+
+UIGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 170, 255)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 85, 255))
+}
+UIGradient.Parent = AttackButton
+
+-- Function to teleport behind players and attack when murderer
+local function teleportAndAttack()
+    if LocalPlayer.Backpack:FindFirstChild("Knife") or (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Knife")) then
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.Humanoid.Health > 0 then
+                local target = player
+                while target and target.Character and target.Character.Humanoid.Health > 0 do
+                    local targetPosition = target.Character.HumanoidRootPart.Position
+                    local teleportPosition = targetPosition - target.Character.HumanoidRootPart.CFrame.LookVector * 3
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition, targetPosition)
+                    
+                    -- Attack the target
+                    if LocalPlayer.Character:FindFirstChild("Knife") then
+                        local knife = LocalPlayer.Character.Knife
+                        knife:Activate()
+                    elseif LocalPlayer.Backpack:FindFirstChild("Knife") then
+                        local knife = LocalPlayer.Backpack.Knife
+                        knife.Parent = LocalPlayer.Character
+                        knife:Activate()
+                    end
+                    RunService.Stepped:Wait()
+                end
+            end
+        end
+    end
+end
+
+-- Attack Button Click Event
+AttackButton.MouseButton1Click:Connect(function()
+    teleportAndAttack()
+end)
+   end,
+})
+
+local FarmTab = Window:CreateTab("Farm", 4483362458) -- Title, Image
+local Section = FarmTab:CreateSection("Auto Farm")
+
+local Button = FarmTab:CreateButton({
+   Name = "auto coin farm UPDATING NOT WORK",
+   Callback = function()
+   print("amaner")
+   end,
+})
+
+local MiscTab = Window:CreateTab("🤡Misc🤡", nil) -- Title, Image
+local Section = FarmTab:CreateSection("Player")
+
+local Slider = MiscTab:CreateSlider({
+   Name = "WalkSpeed",
+   Range = {0, 100},
+   Increment = 10,
+   Suffix = "Speed",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+   end,
+})
+
+local Button = MiscTab:CreateButton({
+   Name = "Infınıte Jump Hotkey Z",
+   Callback = function()
+   local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = game.Players.LocalPlayer
+local Humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") or nil
+local InfiniteJumpEnabled = false
+
+-- Function to toggle infinite jump
+local function toggleInfiniteJump()
+    InfiniteJumpEnabled = not InfiniteJumpEnabled
+end
+
+-- Function to handle jumping
+local function onJumpRequest()
+    if InfiniteJumpEnabled and Humanoid then
+        Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end
+
+-- Listen for key press to toggle infinite jump
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.Z then
+        toggleInfiniteJump()
+    end
+end)
+
+-- Listen for jump requests
+UserInputService.JumpRequest:Connect(onJumpRequest)
+
+-- Ensure the Humanoid is set correctly when the character is added
+LocalPlayer.CharacterAdded:Connect(function(character)
+    Humanoid = character:FindFirstChildOfClass("Humanoid")
+end)
+
+-- Ensure the Humanoid is set correctly if the script runs after the character is already loaded
+if LocalPlayer.Character then
+    Humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+end
+   end,
+})
+
+local Button = MiscTab:CreateButton({
+   Name = "Rejoin",
+   Callback = function()
+   local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Function to rejoin the game
+local function rejoinGame()
+    local gameId = game.PlaceId
+    local jobId = game.JobId
+    TeleportService:TeleportToPlaceInstance(gameId, jobId, LocalPlayer)
+end
+
+-- Invoke the rejoin function immediately
+rejoinGame()
+        end,
+})
